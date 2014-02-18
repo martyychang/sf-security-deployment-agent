@@ -64,7 +64,7 @@ Each time you run the script, you'll get a .zip file in the same folder containi
 
 Edit the .zip file you retrieved from the _source_ org (not the destination org!), and go into the **profiles** folder. Delete the profiles you don't want to deploy, leaving only the ones you _do_ want to deploy. Repeat for the permission sets in the **permissionsets** folder.
 
-### Step 3. Prepare remaining profiles anad permission sets for migration
+### Step 3. Prepare remaining profiles and permission sets for migration
 
 **Tip**: Here are [video instructions](http://screencast.com/t/XIxFzp2Kpdi) for clarification.
 
