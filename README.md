@@ -1,10 +1,10 @@
 ## Note from the author
 
-"_The single script file is pretty crude, I know. I just hope the functionality will make up for the coding style, at least until people have time to clean it up and actually create a nice-looking class or module out of this._" -- Marty
+"_The script files are pretty crude, I know. I just hope the functionality will make up for the coding style, at least until people have time to clean it all up and actually create a nice-looking class or module out of this._" -- Marty
 
-## How do I use the script?
+## How do I use the scripts?
 
-In short, you will run the script from the command line, and then use [Workbench](https://workbench.developerforce.com) to deploy the final package.
+In short, you will run the scripts from the command line, and then use [Workbench](https://workbench.developerforce.com) to deploy the final package.
 
 ### Prerequisites
 
@@ -17,7 +17,7 @@ You should be comfortable with:
 You'll also need to have on your computer:
 
 * Ruby. If you're on Windows, make life simple and run [RailsInstaller](http://railsinstaller.org/en).
-* [Savon](http://savonrb.com/). You can install this using `[gem install](http://guides.rubygems.org/rubygems-basics/#installing_gems)`. These [video instructions](http://screencast.com/t/lL9MZtP1ACX) may also help.
+* [Savon](http://savonrb.com/). You can install this using [`gem install`](http://guides.rubygems.org/rubygems-basics/#installing_gems). These [video instructions](http://screencast.com/t/lL9MZtP1ACX) may also help.
 * The scripts. Look in the **scripts** folder in the repo.
 
 ### Step 1. Retrieve profiles and permission sets
@@ -71,7 +71,7 @@ Edit the .zip file you retrieved from the _source_ org (not the destination org!
 For profiles, run the following command:
 
 ```
-> ruby prepare_profiles.rb _your-source-org-package.zip_ _your-destination-org-package.zip_
+> ruby prepare_profiles.rb your-source-org-package.zip your-destination-org-package.zip
 ```
 
 Make sure you put the parameters in order! This is important for generating the correct deployment package. If you switch up the order, you'll end up with a bad package.
@@ -79,7 +79,7 @@ Make sure you put the parameters in order! This is important for generating the 
 Repeat for permission sets, using the other "prepare" script:
 
 ```
-> ruby prepare_permissionsets.rb _your-source-org-package.zip_ _your-destination-org-package.zip_
+> ruby prepare_permissionsets.rb your-source-org-package.zip your-destination-org-package.zip
 ```
 
 ### Step 4. Deploy usisng Workbench

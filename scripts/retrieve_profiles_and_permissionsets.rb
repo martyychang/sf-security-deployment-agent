@@ -106,15 +106,12 @@ wanted_object_names = [
     "CustomObject",
     "CustomTab", 
     "Dashboard",
-    #"EmailTemplate",
     "Group",
     "Layout", 
     "PermissionSet", 
     "Profile",
-    "Queue",
     "Report",
-    "ReportType",
-    "Workflow"
+    "ReportType"
 ]
 wanted_child_object_names = []  # This may be filled as a result of the above
 
