@@ -37,7 +37,10 @@ OBJECT_FILE_EXTENSION = ".object"
 PACKAGE_XML_FILENAME = "package.xml"
 PROFILE_FILE_EXTENSION = ".profile"
 RECORD_TYPES_FIELD_NAME = "recordTypes"
+SETTABLE_STANDARD_PROFILE_USER_PERMISSIONS_FIELD_NAME = "settableStandardProfileUserPermissions"
+STANDARD_PROFILE_NAME = "StandardProfile"
 USER_PERMISSIONS_FIELD_NAME = "userPermissions"
+UNSETTABLE_STANDARD_PROFILE_USER_PERMISSIONS_FIELD_NAME = "unsettableStandardProfileUserPermissions"
 
 # Check for expected number of arguments
 
@@ -93,6 +96,9 @@ knowns = {
     FIELDS_FIELD_NAME => [],
     LAYOUT_XML_NAME => [],
     RECORD_TYPES_FIELD_NAME => [],
+    SETTABLE_STANDARD_PROFILE_USER_PERMISSIONS_FIELD_NAME => [],
+    STANDARD_PROFILE_NAME => [],
+    UNSETTABLE_STANDARD_PROFILE_USER_PERMISSIONS_FIELD_NAME => [],
     USER_PERMISSIONS_FIELD_NAME => []
 }
 
@@ -114,6 +120,10 @@ CSV.foreach(knowns_csv_path) do |row|
     else
         if row[1] == CUSTOM_TAB_XML_NAME
             knowns[CUSTOM_TAB_XML_NAME].push row[0]
+        elsif row[1] == SETTABLE_STANDARD_PROFILE_USER_PERMISSIONS_FIELD_NAME
+            knowns[SETTABLE_STANDARD_PROFILE_USER_PERMISSIONS_FIELD_NAME].push row[0]
+        elsif row[1] == STANDARD_PROFILE_NAME
+            knowns[STANDARD_PROFILE_NAME].push row[0]
         elsif row[1] == USER_PERMISSIONS_FIELD_NAME
             knowns[USER_PERMISSIONS_FIELD_NAME].push row[0]
         else
@@ -121,6 +131,9 @@ CSV.foreach(knowns_csv_path) do |row|
         end
     end
 end
+
+standard_profile_names = knowns[STANDARD_PROFILE_NAME]
+settable_standard_profile_user_permissions = knowns[SETTABLE_STANDARD_PROFILE_USER_PERMISSIONS_FIELD_NAME]
 
 # Next, let's tackle the package.xml file in our destination .zip file
 # From here, we should be able to extract reliable lists (assuming you used
@@ -534,29 +547,31 @@ Zip::ZipFile.foreach(source_zip_path) do |zip_entry|
         end
         
         remaining_knowns.each do |component_name|
-            profile_el = profile_doc.root
-            xml_field_el = REXML::Element.new xml_field_name
-            
-            children = {
-                "enabled" => false,
-                "name" => component_name
-            }
-            
-            children.each do |key, value|
-                xml_field_child_el = REXML::Element.new key, xml_field_el
-                xml_field_child_el.add_text "#{value}"
+            unless standard_profile_names.include? profile_name and !settable_standard_profile_user_permissions.include?(component_name)
+                profile_el = profile_doc.root
+                xml_field_el = REXML::Element.new xml_field_name
+                
+                children = {
+                    "enabled" => false,
+                    "name" => component_name
+                }
+                
+                children.each do |key, value|
+                    xml_field_child_el = REXML::Element.new key, xml_field_el
+                    xml_field_child_el.add_text "#{value}"
+                end
+                
+                profile_el.insert_after last_el, xml_field_el
+                last_el = xml_field_el
+                
+                log_rows.push [
+                    profile_name,
+                    xml_field_name,
+                    component_name,
+                    "Add",
+                    "Not in #{destination_zip_path}; chmod enabled=false"
+                ]
             end
-            
-            profile_el.insert_after last_el, xml_field_el
-            last_el = xml_field_el
-            
-            log_rows.push [
-                profile_name,
-                xml_field_name,
-                component_name,
-                "Add",
-                "Not in #{destination_zip_path}; chmod enabled=false"
-            ]
         end
         
         # Step THG: We don't want to change the loginHours or loginIpRanges

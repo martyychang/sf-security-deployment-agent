@@ -114,3 +114,8 @@ standard-Pricebook2,CustomTab
 standard-Product2,CustomTab
 standard-Solution,CustomTab
 standard-Workspace,CustomTab
+Admin,StandardProfile
+ContractManager,StandardProfile
+MarketingProfile,StandardProfile
+ReadOnly,StandardProfile
+SolutionManager,StandardProfile
